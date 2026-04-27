@@ -133,13 +133,6 @@ elif st.session_state.step == 3:
     div[role="radiogroup"] label p {
         margin: 0 !important; font-size: 20px !important; font-weight: bold !important; color: #333333 !important;
     }
-    div[role="radiogroup"] label:hover { border-color: #888888 !important; transform: scale(1.05); }
-    div[role="radiogroup"] label:has(input:checked):nth-child(1) { background-color: #ff4b4b !important; border-color: #ff4b4b !important; }
-    div[role="radiogroup"] label:has(input:checked):nth-child(2) { background-color: #ff9800 !important; border-color: #ff9800 !important; }
-    div[role="radiogroup"] label:has(input:checked):nth-child(3) { background-color: #ffc107 !important; border-color: #ffc107 !important; }
-    div[role="radiogroup"] label:has(input:checked):nth-child(4) { background-color: #8bc34a !important; border-color: #8bc34a !important; }
-    div[role="radiogroup"] label:has(input:checked):nth-child(5) { background-color: #4caf50 !important; border-color: #4caf50 !important; }
-    div[role="radiogroup"] label:has(input:checked) p { color: white !important; }
     </style>
     """
     st.markdown(custom_css, unsafe_allow_html=True)
