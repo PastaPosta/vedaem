@@ -41,7 +41,7 @@ if st.session_state.step == 1:
     st.markdown("""
     **Welcome!** This system uses advanced algorithmic logic to predict your optimal career path based on your academic profile.
     
-    **Добро пожаловать!** Эта система использует передовые алгоритмы для прогнозирования оптимального карьерного пути на основе вашего профиля.
+    **Добропло пожаловать!** Эта система использует передовые алгоритмы для прогнозирования оптимального карьерного пути на основе вашего профиля.
     
     **Қош келдіңіз!** Бұл жүйе сіздің академиялық профиліңізге негізделген оңтайлы мансап жолын болжау үшін озық алгоритмдерді пайдаланады.
     """)
@@ -61,30 +61,18 @@ if st.session_state.step == 1:
 
 # --- ШАГ 2: ВЫБОР НАПРАВЛЕНИЯ И ПРЕДМЕТОВ ---
 elif st.session_state.step == 2:
-    # ГЛОБАЛЬНЫЙ CSS для скрытия 'Select all'
-    # Мы скрываем первый элемент (li:first-child) в любом выпадающем списке (popover)
+    # CSS только для скрытия 'Select all' в списке предметов
     st.markdown(
         """
         <style>
-        /* Скрываем саму кнопку Select All по ID */
-        button[data-testid="stMultiSelectSelectAll"] {
-            display: none !important;
-        }
-        /* Скрываем первый элемент списка в выпадающем окне (Select all обычно там) */
-        div[data-baseweb="popover"] ul li:first-child {
-            display: none !important;
-        }
-        /* Скрываем разделительную черту после Select all */
-        div[data-baseweb="popover"] ul li:nth-child(2) {
-            margin-top: 0px !important;
-        }
+        button[data-testid="stMultiSelectSelectAll"] { display: none !important; }
+        div[data-baseweb="popover"] ul li:first-child { display: none !important; }
         </style>
         """,
         unsafe_allow_html=True
     )
 
     st.header("Step 2 | Шаг 2 | 2-қадам")
-    
     st.subheader("Select your Major/Program \nВыберите вашу специальность/программу \nМамандығыңызды/бағдарламаңызды таңдаңыз:")
     
     st.session_state.major = st.selectbox(
@@ -104,7 +92,6 @@ elif st.session_state.step == 2:
     """)
     
     subjects_list = majors_data[st.session_state.major]
-    
     st.session_state.selected_subjects = st.multiselect(
         "Choose exactly 3 subjects / Выберите ровно 3 предмета / Нақты 3 пәнді таңдаңыз:", 
         subjects_list,
@@ -119,9 +106,6 @@ elif st.session_state.step == 2:
 
 # --- ШАГ 3: РЕЗУЛЬТАТЫ И ОЦЕНКА ---
 elif st.session_state.step == 3:
-    
-    st.markdown(unsafe_allow_html=True)
-    
     st.title("AI Analysis Results | Результаты ИИ | ЖИ талдау нәтижелері")
     
     if 'analyzed' not in st.session_state:
@@ -140,6 +124,7 @@ elif st.session_state.step == 3:
     major = st.session_state.major
     subjects = st.session_state.selected_subjects
     
+    # Логика рекомендаций
     if "Data" in major:
         skill_rec = "Data Analyst / Аналитик данных / Деректер талдаушысы"
         market_rec = "Data Engineer / Инженер данных / Деректер инженері"
@@ -161,45 +146,45 @@ elif st.session_state.step == 3:
         # MODEL 1
         st.subheader("Model 1 | Модель 1 | 1-модель")
         st.markdown(f"**Career / Профессия / Мансап:** **{skill_rec}**")
-        st.caption("Logic: Academic skills matching | Логика: Сопоставление академических навыков | Логика: Академиялық дағдыларды сәйкестендіру")
+        st.caption("Logic: Academic skills matching")
         
-        st.write("How accurately does this reflect your potential? / Насколько точно это отражает ваш потенциал? / Бұл сіздің әлеуетіңізді қаншалықты дәл көрсетеді? *(1 = Min, 5 = Max)*")
-        acc_1 = st.radio("Accuracy 1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a1', label_visibility="collapsed")
+        st.write("How accurately does this reflect your potential? (1 = Min, 5 = Max)")
+        acc_1 = st.radio("A1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a1', label_visibility="collapsed")
         
-        st.write("How likely are you to pursue this? / Насколько вероятно, что вы выберете этот путь? / Бұл мансапты таңдау ықтималдығыңыз қандай? *(1 = Min, 5 = Max)*")
-        int_1 = st.radio("Intent 1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i1', label_visibility="collapsed")
+        st.write("How likely are you to pursue this? (1 = Min, 5 = Max)")
+        int_1 = st.radio("I1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i1', label_visibility="collapsed")
         st.divider()
 
         # MODEL 2
         st.subheader("Model 2 | Модель 2 | 2-модель")
         st.markdown(f"**Career / Профессия / Мансап:** **{market_rec}**")
-        st.caption("Logic: Market demand & salary | Логика: Спрос на рынке и зарплаты | Логика: Нарықтағы сұраныс және жалақы")
+        st.caption("Logic: Market demand & salary")
         
-        st.write("How accurately does this reflect your potential? / Насколько точно это отражает ваш потенциал? / Бұл сіздің әлеуетіңізді қаншалықты дәл көрсетеді? *(1 = Min, 5 = Max)*")
-        acc_2 = st.radio("Accuracy 2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a2', label_visibility="collapsed")
+        st.write("How accurately does this reflect your potential? (1 = Min, 5 = Max)")
+        acc_2 = st.radio("A2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a2', label_visibility="collapsed")
         
-        st.write("How likely are you to pursue this? / Насколько вероятно, что вы выберете этот путь? / Бұл мансапты таңдау ықтималдығыңыз қандай? *(1 = Min, 5 = Max)*")
-        int_2 = st.radio("Intent 2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i2', label_visibility="collapsed")
+        st.write("How likely are you to pursue this? (1 = Min, 5 = Max)")
+        int_2 = st.radio("I2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i2', label_visibility="collapsed")
         st.divider()
 
         # MODEL 3
         st.subheader("Model 3 | Модель 3 | 3-модель")
         st.markdown(f"**Career / Профессия / Мансап:** **{interest_rec}**")
-        st.caption("Logic: Subject interests | Логика: Ваши личные интересы | Логика: Сіздің жеке қызығушылықтарыңыз")
+        st.caption("Logic: Subject interests")
         
-        st.write("How accurately does this reflect your potential? / Насколько точно это отражает ваш потенциал? / Бұл сіздің әлеуетіңізді қаншалықты дәл көрсетеді? *(1 = Min, 5 = Max)*")
-        acc_3 = st.radio("Accuracy 3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a3', label_visibility="collapsed")
+        st.write("How accurately does this reflect your potential? (1 = Min, 5 = Max)")
+        acc_3 = st.radio("A3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a3', label_visibility="collapsed")
         
-        st.write("How likely are you to pursue this? / Насколько вероятно, что вы выберете этот путь? / Бұл мансапты таңдау ықтималдығыңыз қандай? *(1 = Min, 5 = Max)*")
-        int_3 = st.radio("Intent 3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i3', label_visibility="collapsed")
+        st.write("How likely are you to pursue this? (1 = Min, 5 = Max)")
+        int_3 = st.radio("I3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i3', label_visibility="collapsed")
         
         submitted = st.form_submit_button("Submit Evaluations / Отправить оценки / Бағалауларды жіберу")
         
-        conn = st.connection("gsheets", type=GSheetsConnection)
         if submitted:
             if None in [acc_1, int_1, acc_2, int_2, acc_3, int_3]:
-                st.error("Please answer all questions.")
+                st.error("Please answer all questions before submitting.")
             else:
+                conn = st.connection("gsheets", type=GSheetsConnection)
                 new_data = pd.DataFrame([{
                     "Course": st.session_state.course,
                     "Experience": st.session_state.experience,
@@ -218,6 +203,8 @@ elif st.session_state.step == 3:
                 except Exception as e:
                     st.error(f"Error: {e}")
 
+# --- ШАГ 4: ФИНАЛ ---
 elif st.session_state.step == 4:
     st.title("Thank you! | Спасибо! | Рақмет!")
     st.success("Your responses have been successfully recorded.")
+    st.markdown("Your input is incredibly valuable for our research.")
