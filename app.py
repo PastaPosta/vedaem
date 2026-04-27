@@ -180,36 +180,42 @@ elif st.session_state.step == 3:
         interest_rec = "Mobile Architect / Мобильный архитектор / Мобильді сәулетші" if "iOS/Android mobile applications development" in subjects else "DevOps Engineer / DevOps-инженер / DevOps-инженері"
 
     with st.form("results_form"):
-        # Model 1
+        # MODEL 1
         st.subheader("Model 1 | Модель 1 | 1-модель")
-        st.markdown(f"**Career:** **{skill_rec}**")
-        st.caption("Logic: Academic skills matching")
-        st.write("How accurately does this reflect your potential? (1-5)")
-        acc_1 = st.radio("A1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a1', label_visibility="collapsed")
-        st.write("How likely are you to pursue this? (1-5)")
-        int_1 = st.radio("I1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i1', label_visibility="collapsed")
-        st.divider()
-
-        # Model 2
-        st.subheader("Model 2 | Модель 2 | 2-модель")
-        st.markdown(f"**Career:** **{market_rec}**")
-        st.caption("Logic: Market demand & salary")
-        st.write("How accurately does this reflect your potential? (1-5)")
-        acc_2 = st.radio("A2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a2', label_visibility="collapsed")
-        st.write("How likely are you to pursue this? (1-5)")
-        int_2 = st.radio("I2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i2', label_visibility="collapsed")
-        st.divider()
-
-        # Model 3
-        st.subheader("Model 3 | Модель 3 | 3-модель")
-        st.markdown(f"**Career:** **{interest_rec}**")
-        st.caption("Logic: Subject interests")
-        st.write("How accurately does this reflect your potential? (1-5)")
-        acc_3 = st.radio("A3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a3', label_visibility="collapsed")
-        st.write("How likely are you to pursue this? (1-5)")
-        int_3 = st.radio("I3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i3', label_visibility="collapsed")
+        st.markdown(f"**Career / Профессия / Мансап:** **{skill_rec}**")
+        st.caption("Logic: Academic skills matching | Логика: Сопоставление академических навыков | Логика: Академиялық дағдыларды сәйкестендіру")
         
-        submitted = st.form_submit_button("Submit Evaluations / Отправить оценки")
+        st.write("How accurately does this reflect your potential? / Насколько точно это отражает ваш потенциал? / Бұл сіздің әлеуетіңізді қаншалықты дәл көрсетеді? *(1 = Min, 5 = Max)*")
+        acc_1 = st.radio("Accuracy 1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a1', label_visibility="collapsed")
+        
+        st.write("How likely are you to pursue this? / Насколько вероятно, что вы выберете этот путь? / Бұл мансапты таңдау ықтималдығыңыз қандай? *(1 = Min, 5 = Max)*")
+        int_1 = st.radio("Intent 1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i1', label_visibility="collapsed")
+        st.divider()
+
+        # MODEL 2
+        st.subheader("Model 2 | Модель 2 | 2-модель")
+        st.markdown(f"**Career / Профессия / Мансап:** **{market_rec}**")
+        st.caption("Logic: Market demand & salary | Логика: Спрос на рынке и зарплаты | Логика: Нарықтағы сұраныс және жалақы")
+        
+        st.write("How accurately does this reflect your potential? / Насколько точно это отражает ваш потенциал? / Бұл сіздің әлеуетіңізді қаншалықты дәл көрсетеді? *(1 = Min, 5 = Max)*")
+        acc_2 = st.radio("Accuracy 2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a2', label_visibility="collapsed")
+        
+        st.write("How likely are you to pursue this? / Насколько вероятно, что вы выберете этот путь? / Бұл мансапты таңдау ықтималдығыңыз қандай? *(1 = Min, 5 = Max)*")
+        int_2 = st.radio("Intent 2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i2', label_visibility="collapsed")
+        st.divider()
+
+        # MODEL 3
+        st.subheader("Model 3 | Модель 3 | 3-модель")
+        st.markdown(f"**Career / Профессия / Мансап:** **{interest_rec}**")
+        st.caption("Logic: Subject interests | Логика: Ваши личные интересы | Логика: Сіздің жеке қызығушылықтарыңыз")
+        
+        st.write("How accurately does this reflect your potential? / Насколько точно это отражает ваш потенциал? / Бұл сіздің әлеуетіңізді қаншалықты дәл көрсетеді? *(1 = Min, 5 = Max)*")
+        acc_3 = st.radio("Accuracy 3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a3', label_visibility="collapsed")
+        
+        st.write("How likely are you to pursue this? / Насколько вероятно, что вы выберете этот путь? / Бұл мансапты таңдау ықтималдығыңыз қандай? *(1 = Min, 5 = Max)*")
+        int_3 = st.radio("Intent 3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i3', label_visibility="collapsed")
+        
+        submitted = st.form_submit_button("Submit Evaluations / Отправить оценки / Бағалауларды жіберу")
         
         conn = st.connection("gsheets", type=GSheetsConnection)
         if submitted:
