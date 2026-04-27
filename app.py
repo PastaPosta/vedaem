@@ -16,7 +16,7 @@ majors_data = {
         "Information Security Fundamentals", "Introduction to Cryptography", 
         "Ethical Hacking", "Network administration", "Reverse Engineering Fundamentals", "Operating system security"
     ],
-    "Digital Management & Design / Цифровой Менеджмент и Дизайн / Цифрлық Менеджмент және Дизайн":[
+    "Digital Management & Design / Цифровой Менеджмент и Дизайн / Цифрлық Менеджмент পিছিয়ে Дизайн":[
         "UX/UI Fundamentals", "Digital Marketing", "Project Management", 
         "Front end development", "3D Modeling and Animation", "Principles of Marketing"
     ],
@@ -63,12 +63,19 @@ if st.session_state.step == 1:
 elif st.session_state.step == 2:
     st.header("Step 2 | Шаг 2 | 2-қадам")
     
+    # 1. Сделали текст крупнее и заметнее
+    st.subheader("Select your Major/Program \nВыберите вашу специальность/программу \nМамандығыңызды/бағдарламаңызды таңдаңыз:")
+    
     st.session_state.major = st.selectbox(
-        "Select your Major/Program \n\nВыберите вашу специальность/программу \n\nМамандығыңызды/бағдарламаңызды таңдаңыз:", 
-        list(majors_data.keys())
+        "Major Selection", 
+        list(majors_data.keys()),
+        label_visibility="collapsed" # Скрыли дублирующийся мелкий текст
     )
     
-    st.info("""
+    st.divider()
+    
+    # 2. Убрали синий фон st.info, заменили на менее яркий серый st.caption
+    st.caption("""
     **Select your top 3 favorite subjects:** Choose the subjects where you feel most confident or interested in.  
     
     **Выберите 3 ваших любимых предмета:** Выберите предметы, в которых вы чувствуете себя наиболее уверенно или которые вам интересны.  
