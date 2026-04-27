@@ -26,7 +26,7 @@ majors_data = {
     ]
 }
 
-# --- ИНИЦИАЛИЗАЦИЯ СОСТОЯНИЯ (SESSION STATE) ---
+# --- ИНИЦИАЛИЗАЦИЯ СОСТОЯНИЯ ---
 if 'step' not in st.session_state:
     st.session_state.step = 1
 
@@ -93,58 +93,58 @@ elif st.session_state.step == 2:
 # --- ШАГ 3: РЕЗУЛЬТАТЫ И ОЦЕНКА ---
 elif st.session_state.step == 3:
     
-    # --- CSS ИНЪЕКЦИЯ ДЛЯ КВАДРАТНЫХ ЦВЕТНЫХ КНОПОК ---
+    # === CSS ДЛЯ КВАДРАТНЫХ КНОПОК ===
     custom_css = """
     <style>
-    /* Прячем стандартные кружки радио-кнопок */
+    /* Убираем стандартные кружочки радио-кнопок */
     div[role="radiogroup"] label div:first-child {
         display: none !important;
     }
     
-    /* Делаем варианты ответов квадратными кнопками */
+    /* Оформляем сами варианты (кнопки) по умолчанию */
     div[role="radiogroup"] label {
-        min-width: 45px !important;
-        height: 45px !important;
+        min-width: 50px !important;
+        height: 50px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        border-radius: 8px !important; /* Квадрат с легким закруглением */
-        margin-right: 12px !important;
-        background-color: #f8f9fa;
-        border: 2px solid transparent !important;
-        cursor: pointer;
+        border-radius: 8px !important; 
+        margin-right: 10px !important;
+        background-color: #f0f2f6 !important; /* Светло-серый фон до нажатия */
+        border: 2px solid #cccccc !important; /* Серая рамка */
+        cursor: pointer !important;
         transition: all 0.2s ease-in-out;
     }
     
-    /* Текст внутри кнопок */
+    /* Оформляем ЦИФРЫ внутри (чтобы их точно было видно до клика) */
     div[role="radiogroup"] label p {
         margin: 0 !important;
-        font-size: 18px !important;
+        font-size: 20px !important;
         font-weight: bold !important;
+        color: #333333 !important; /* Темно-серые/черные цифры */
     }
 
-    /* Рамка и цвет текста по умолчанию (от 1 до 5) */
-    div[role="radiogroup"] label:nth-child(1) { color: #ff4b4b; border-color: #ff4b4b; }
-    div[role="radiogroup"] label:nth-child(2) { color: #ff9800; border-color: #ff9800; }
-    div[role="radiogroup"] label:nth-child(3) { color: #ffc107; border-color: #ffc107; }
-    div[role="radiogroup"] label:nth-child(4) { color: #8bc34a; border-color: #8bc34a; }
-    div[role="radiogroup"] label:nth-child(5) { color: #4caf50; border-color: #4caf50; }
+    /* Эффект при наведении мышкой */
+    div[role="radiogroup"] label:hover {
+        border-color: #888888 !important;
+        transform: scale(1.05);
+    }
 
-    /* Заливка кнопки при ВЫБОРЕ */
-    div[role="radiogroup"] label:has(input:checked):nth-child(1) { background-color: #ff4b4b !important; color: white !important; }
-    div[role="radiogroup"] label:has(input:checked):nth-child(2) { background-color: #ff9800 !important; color: white !important; }
-    div[role="radiogroup"] label:has(input:checked):nth-child(3) { background-color: #ffc107 !important; color: white !important; }
-    div[role="radiogroup"] label:has(input:checked):nth-child(4) { background-color: #8bc34a !important; color: white !important; }
-    div[role="radiogroup"] label:has(input:checked):nth-child(5) { background-color: #4caf50 !important; color: white !important; }
+    /* --- ЦВЕТА ПРИ НАЖАТИИ (ВЫБОРЕ) --- */
+    /* 1 - Красный */
+    div[role="radiogroup"] label:has(input:checked):nth-child(1) { background-color: #ff4b4b !important; border-color: #ff4b4b !important; }
+    /* 2 - Оранжевый */
+    div[role="radiogroup"] label:has(input:checked):nth-child(2) { background-color: #ff9800 !important; border-color: #ff9800 !important; }
+    /* 3 - Желтый */
+    div[role="radiogroup"] label:has(input:checked):nth-child(3) { background-color: #ffc107 !important; border-color: #ffc107 !important; }
+    /* 4 - Салатовый */
+    div[role="radiogroup"] label:has(input:checked):nth-child(4) { background-color: #8bc34a !important; border-color: #8bc34a !important; }
+    /* 5 - Зеленый */
+    div[role="radiogroup"] label:has(input:checked):nth-child(5) { background-color: #4caf50 !important; border-color: #4caf50 !important; }
 
-    /* Перекрашиваем текст в белый у выбранной кнопки */
+    /* Когда кнопка выбрана - красим цифру внутри в БЕЛЫЙ цвет */
     div[role="radiogroup"] label:has(input:checked) p {
         color: white !important;
-    }
-    
-    /* Анимация при наведении */
-    div[role="radiogroup"] label:hover {
-        transform: scale(1.05);
     }
     </style>
     """
