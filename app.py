@@ -61,16 +61,27 @@ if st.session_state.step == 1:
 
 # --- ШАГ 2: ВЫБОР НАПРАВЛЕНИЯ И ПРЕДМЕТОВ ---
 elif st.session_state.step == 2:
-    # CSS для скрытия кнопки "Select all" в выпадающем списке
-    hide_select_all_css = """
-    <style>
-    /* Скрываем кнопку Select All в мультиселекте */
-    button[data-testid="stMultiSelectSelectAll"] {
-        display: none !important;
-    }
-    </style>
-    """
-    st.markdown(hide_select_all_css, unsafe_allow_html=True)
+    # ГЛОБАЛЬНЫЙ CSS для скрытия 'Select all'
+    # Мы скрываем первый элемент (li:first-child) в любом выпадающем списке (popover)
+    st.markdown(
+        """
+        <style>
+        /* Скрываем саму кнопку Select All по ID */
+        button[data-testid="stMultiSelectSelectAll"] {
+            display: none !important;
+        }
+        /* Скрываем первый элемент списка в выпадающем окне (Select all обычно там) */
+        div[data-baseweb="popover"] ul li:first-child {
+            display: none !important;
+        }
+        /* Скрываем разделительную черту после Select all */
+        div[data-baseweb="popover"] ul li:nth-child(2) {
+            margin-top: 0px !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.header("Step 2 | Шаг 2 | 2-қадам")
     
@@ -97,7 +108,7 @@ elif st.session_state.step == 2:
     st.session_state.selected_subjects = st.multiselect(
         "Choose exactly 3 subjects / Выберите ровно 3 предмета / Нақты 3 пәнді таңдаңыз:", 
         subjects_list,
-        max_selections=3 # Это автоматически отключает 'Select all' в большинстве версий
+        max_selections=3
     )
     
     if len(st.session_state.selected_subjects) == 3:
