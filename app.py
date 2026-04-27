@@ -92,6 +92,64 @@ elif st.session_state.step == 2:
 
 # --- ШАГ 3: РЕЗУЛЬТАТЫ И ОЦЕНКА ---
 elif st.session_state.step == 3:
+    
+    # --- CSS ИНЪЕКЦИЯ ДЛЯ КВАДРАТНЫХ ЦВЕТНЫХ КНОПОК ---
+    custom_css = """
+    <style>
+    /* Прячем стандартные кружки радио-кнопок */
+    div[role="radiogroup"] label div:first-child {
+        display: none !important;
+    }
+    
+    /* Делаем варианты ответов квадратными кнопками */
+    div[role="radiogroup"] label {
+        min-width: 45px !important;
+        height: 45px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 8px !important; /* Квадрат с легким закруглением */
+        margin-right: 12px !important;
+        background-color: #f8f9fa;
+        border: 2px solid transparent !important;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    /* Текст внутри кнопок */
+    div[role="radiogroup"] label p {
+        margin: 0 !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+    }
+
+    /* Рамка и цвет текста по умолчанию (от 1 до 5) */
+    div[role="radiogroup"] label:nth-child(1) { color: #ff4b4b; border-color: #ff4b4b; }
+    div[role="radiogroup"] label:nth-child(2) { color: #ff9800; border-color: #ff9800; }
+    div[role="radiogroup"] label:nth-child(3) { color: #ffc107; border-color: #ffc107; }
+    div[role="radiogroup"] label:nth-child(4) { color: #8bc34a; border-color: #8bc34a; }
+    div[role="radiogroup"] label:nth-child(5) { color: #4caf50; border-color: #4caf50; }
+
+    /* Заливка кнопки при ВЫБОРЕ */
+    div[role="radiogroup"] label:has(input:checked):nth-child(1) { background-color: #ff4b4b !important; color: white !important; }
+    div[role="radiogroup"] label:has(input:checked):nth-child(2) { background-color: #ff9800 !important; color: white !important; }
+    div[role="radiogroup"] label:has(input:checked):nth-child(3) { background-color: #ffc107 !important; color: white !important; }
+    div[role="radiogroup"] label:has(input:checked):nth-child(4) { background-color: #8bc34a !important; color: white !important; }
+    div[role="radiogroup"] label:has(input:checked):nth-child(5) { background-color: #4caf50 !important; color: white !important; }
+
+    /* Перекрашиваем текст в белый у выбранной кнопки */
+    div[role="radiogroup"] label:has(input:checked) p {
+        color: white !important;
+    }
+    
+    /* Анимация при наведении */
+    div[role="radiogroup"] label:hover {
+        transform: scale(1.05);
+    }
+    </style>
+    """
+    st.markdown(custom_css, unsafe_allow_html=True)
+    
     st.title("AI Analysis Results | Результаты ИИ | ЖИ талдау нәтижелері")
     
     if 'analyzed' not in st.session_state:
@@ -172,7 +230,6 @@ elif st.session_state.step == 3:
         conn = st.connection("gsheets", type=GSheetsConnection)
 
         if submitted:
-            # ПРОВЕРКА: ответил ли студент на все вопросы (нет ли пустых значений)
             if None in[acc_1, int_1, acc_2, int_2, acc_3, int_3]:
                 st.error("Please answer all questions before submitting. / Пожалуйста, оцените все варианты перед отправкой. / Жібермес бұрын барлық сұрақтарға жауап беріңіз.")
             else:
