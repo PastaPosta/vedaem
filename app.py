@@ -120,7 +120,7 @@ elif st.session_state.step == 2:
 # --- ШАГ 3: РЕЗУЛЬТАТЫ И ОЦЕНКА ---
 elif st.session_state.step == 3:
     
-    st.markdown(custom_css, unsafe_allow_html=True)
+    st.markdown(unsafe_allow_html=True)
     
     st.title("AI Analysis Results | Результаты ИИ | ЖИ талдау нәтижелері")
     
