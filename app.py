@@ -120,21 +120,6 @@ elif st.session_state.step == 2:
 # --- ШАГ 3: РЕЗУЛЬТАТЫ И ОЦЕНКА ---
 elif st.session_state.step == 3:
     
-    custom_css = """
-    <style>
-    div[role="radiogroup"] label div:first-child { display: none !important; }
-    div[role="radiogroup"] label {
-        min-width: 50px !important; height: 50px !important;
-        display: flex !important; align-items: center !important; justify-content: center !important;
-        border-radius: 8px !important; margin-right: 10px !important;
-        background-color: #f0f2f6 !important; border: 2px solid #cccccc !important;
-        cursor: pointer !important; transition: all 0.2s ease-in-out;
-    }
-    div[role="radiogroup"] label p {
-        margin: 0 !important; font-size: 20px !important; font-weight: bold !important; color: #333333 !important;
-    }
-    </style>
-    """
     st.markdown(custom_css, unsafe_allow_html=True)
     
     st.title("AI Analysis Results | Результаты ИИ | ЖИ талдау нәтижелері")
