@@ -40,11 +40,11 @@ if st.session_state.step == 1:
     st.caption("Research Simulation | Симуляция исследования | Зерттеу симуляциясы")
     
     st.markdown("""
-    **Welcome!** This system uses advanced algorithmic logic to predict your optimal career path based on your academic profile.
+    **Welcome!** This system uses algorithmic logic to predict your optimal career path based on your academic profile.
     
-    **Добро пожаловать!** Эта система использует передовые алгоритмы для прогнозирования оптимального карьерного пути на основе вашего профиля.
+    **Добро пожаловать!** Эта система использует алгоритмы для прогнозирования оптимального карьерного пути на основе вашего профиля.
     
-    **Қош келдіңіз!** Бұл жүйе сіздің академиялық профиліңізге негізделген оңтайлы мансап жолын болжау үшін озық алгоритмдерді пайдаланады.
+    **Қош келдіңіз!** Бұл жүйе сіздің академиялық профиліңізге негізделген оңтайлы мансап жолын болжау үшін алгоритмдерді пайдаланады.
     """)
     
     st.divider()
