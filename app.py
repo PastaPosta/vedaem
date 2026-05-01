@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import time
+import random
 
 # --- НАСТРОЙКА СТРАНИЦЫ ---
 st.set_page_config(page_title="AI Career Predictor", layout="centered")
@@ -41,7 +42,7 @@ if st.session_state.step == 1:
     st.markdown("""
     **Welcome!** This system uses advanced algorithmic logic to predict your optimal career path based on your academic profile.
     
-    **Добропло пожаловать!** Эта система использует передовые алгоритмы для прогнозирования оптимального карьерного пути на основе вашего профиля.
+    **Добро пожаловать!** Эта система использует передовые алгоритмы для прогнозирования оптимального карьерного пути на основе вашего профиля.
     
     **Қош келдіңіз!** Бұл жүйе сіздің академиялық профиліңізге негізделген оңтайлы мансап жолын болжау үшін озық алгоритмдерді пайдаланады.
     """)
@@ -114,11 +115,9 @@ elif st.session_state.step == 3:
         st.session_state.analyzed = True
         
     st.success("""
-    **Analysis Complete!** Here are your 3 tailored recommendations. Please evaluate **each** carefully.  
+    **Analysis Complete!** Here are your 3 tailored recommendations. Please evaluate **each** carefully (1 = Strongly Disagree/Min, 5 = Strongly Agree/Max).  
     
-    **Анализ завершен!** Вот 3 индивидуальные рекомендации. Пожалуйста, внимательно оцените **каждую** из них.  
-    
-    **Талдау аяқталды!** Міне 3 жеке ұсыныс. **Әр** ұсынысты мұқият бағалауыңызды сұраймыз.
+    **Анализ завершен!** Вот 3 индивидуальные рекомендации. Пожалуйста, внимательно оцените **каждую** (1 = Абсолютно не согласен/Мин, 5 = Абсолютно согласен/Макс).  
     """)
     
     major = st.session_state.major
@@ -132,68 +131,82 @@ elif st.session_state.step == 3:
     elif "Cyber" in major:
         skill_rec = "InfoSec Specialist / Специалист по ИБ / АҚ маманы"
         market_rec = "Cloud Security Architect / Архитектор облачной безопасности / Бұлттық қауіпсіздік сәулетшісі"
-        interest_rec = "Penetration Tester / Пентестер (Этичный хакер) / Пентестер" if "Ethical Hacking" in subjects else "Cryptography Engineer / Инженер-криптограф / Криптография инженері"
+        interest_rec = "Penetration Tester / Пентестер (Этичный хакер)" if "Ethical Hacking" in subjects else "Cryptography Engineer / Инженер-криптограф"
     elif "Management" in major:
-        skill_rec = "Digital Product Designer / Дизайнер цифровых продуктов / Цифрлық өнім дизайнері"
-        market_rec = "IT Project Manager / IT Проджект-менеджер / IT Жоба менеджері"
-        interest_rec = "UX/UI Researcher / UX/UI Исследователь / UX/UI Зерттеушісі" if "UX/UI Fundamentals" in subjects else "Creative Director / Креативный директор / Креативті директор"
+        skill_rec = "Digital Product Designer / Дизайнер цифровых продуктов"
+        market_rec = "IT Project Manager / IT Проджект-менеджер"
+        interest_rec = "UX/UI Researcher / UX/UI Исследователь" if "UX/UI Fundamentals" in subjects else "Creative Director / Креативный директор"
     else: 
-        skill_rec = "Backend Engineer / Backend-разработчик / Backend-әзірлеуші"
-        market_rec = "Full-Stack Developer / Full-Stack Разработчик / Full-Stack Әзірлеуші"
-        interest_rec = "Mobile Architect / Мобильный архитектор / Мобильді сәулетші" if "iOS/Android mobile applications development" in subjects else "DevOps Engineer / DevOps-инженер / DevOps-инженері"
+        skill_rec = "Backend Engineer / Backend-разработчик"
+        market_rec = "Full-Stack Developer / Full-Stack Разработчик"
+        interest_rec = "Mobile Architect / Мобильный архитектор" if "iOS/Android mobile applications development" in subjects else "DevOps Engineer / DevOps-инженер"
+
+    # Формируем список моделей (это нужно для рандомизации)
+    models =[
+        {"id": "M1", "type": "Skill", "rec": skill_rec, "logic": "Academic skills matching"},
+        {"id": "M2", "type": "Market", "rec": market_rec, "logic": "Market demand & salary"},
+        {"id": "M3", "type": "Interest", "rec": interest_rec, "logic": "Subject interests"}
+    ]
+    
+    # Рандомизируем порядок выдачи моделей (сохраняем в session_state, чтобы при клике не перемешивалось заново)
+    if 'shuffled_models' not in st.session_state:
+        random.shuffle(models)
+        st.session_state.shuffled_models = models
 
     with st.form("results_form"):
-        # MODEL 1
-        st.subheader("Model 1 | Модель 1 | 1-модель")
-        st.markdown(f"**Career / Профессия / Мансап:** **{skill_rec}**")
-        st.caption("Logic: Academic skills matching")
+        responses = {} # Словарь для сбора ответов
         
-        st.write("How accurately does this reflect your potential? (1 = Min, 5 = Max)")
-        acc_1 = st.radio("A1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a1', label_visibility="collapsed")
-        
-        st.write("How likely are you to pursue this? (1 = Min, 5 = Max)")
-        int_1 = st.radio("I1", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i1', label_visibility="collapsed")
-        st.divider()
+        # Выводим модели в случайном порядке
+        for i, model in enumerate(st.session_state.shuffled_models):
+            st.subheader(f"Model {i+1} | Модель {i+1} | {i+1}-модель")
+            st.markdown(f"**Career / Профессия / Мансап:** **{model['rec']}**")
+            st.caption(f"Logic: {model['logic']}")
+            
+            # --- Perceived Accuracy (2 вопроса) ---
+            st.write("**Q1:** How accurately does this reflect your potential? / Насколько точно это отражает ваш потенциал?")
+            responses[f"{model['id']}_Acc1"] = st.radio(f"A1_{model['id']}", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key=f"a1_{model['id']}", label_visibility="collapsed")
+            
+            st.write("**Q2:** This path matches my actual technical skills. / Этот путь соответствует моим реальным навыкам.")
+            responses[f"{model['id']}_Acc2"] = st.radio(f"A2_{model['id']}", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key=f"a2_{model['id']}", label_visibility="collapsed")
+            
+            # --- Intent to Pursue (2 вопроса) ---
+            st.write("**Q3:** How likely are you to pursue this? / Насколько вероятно, что вы выберете этот путь?")
+            responses[f"{model['id']}_Int1"] = st.radio(f"I1_{model['id']}", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key=f"i1_{model['id']}", label_visibility="collapsed")
+            
+            st.write("**Q4:** I plan to research this career path further. / Я планирую изучить эту профессию подробнее.")
+            responses[f"{model['id']}_Int2"] = st.radio(f"I2_{model['id']}", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key=f"i2_{model['id']}", label_visibility="collapsed")
+            
+            st.divider()
 
-        # MODEL 2
-        st.subheader("Model 2 | Модель 2 | 2-модель")
-        st.markdown(f"**Career / Профессия / Мансап:** **{market_rec}**")
-        st.caption("Logic: Market demand & salary")
-        
-        st.write("How accurately does this reflect your potential? (1 = Min, 5 = Max)")
-        acc_2 = st.radio("A2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a2', label_visibility="collapsed")
-        
-        st.write("How likely are you to pursue this? (1 = Min, 5 = Max)")
-        int_2 = st.radio("I2", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i2', label_visibility="collapsed")
-        st.divider()
-
-        # MODEL 3
-        st.subheader("Model 3 | Модель 3 | 3-модель")
-        st.markdown(f"**Career / Профессия / Мансап:** **{interest_rec}**")
-        st.caption("Logic: Subject interests")
-        
-        st.write("How accurately does this reflect your potential? (1 = Min, 5 = Max)")
-        acc_3 = st.radio("A3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='a3', label_visibility="collapsed")
-        
-        st.write("How likely are you to pursue this? (1 = Min, 5 = Max)")
-        int_3 = st.radio("I3", options=[1, 2, 3, 4, 5], index=None, horizontal=True, key='i3', label_visibility="collapsed")
-        
         submitted = st.form_submit_button("Submit Evaluations / Отправить оценки / Бағалауларды жіберу")
         
         if submitted:
-            if None in [acc_1, int_1, acc_2, int_2, acc_3, int_3]:
-                st.error("Please answer all questions before submitting.")
+            # Проверка, что на все 12 вопросов (3 модели * 4 вопроса) дан ответ
+            if None in responses.values():
+                st.error("Please answer all questions before submitting. / Пожалуйста, ответьте на все вопросы перед отправкой.")
             else:
                 conn = st.connection("gsheets", type=GSheetsConnection)
+                
+                # Формируем итоговый DataFrame (колонки жестко привязаны к M1, M2, M3 вне зависимости от порядка вывода)
                 new_data = pd.DataFrame([{
                     "Course": st.session_state.course,
                     "Experience": st.session_state.experience,
                     "Major": st.session_state.major.split(" / ")[0],
                     "Subjects": ", ".join(st.session_state.selected_subjects),
-                    "M1_Skill_Rec": skill_rec.split(" / ")[0], "M1_Accuracy": acc_1, "M1_Intent": int_1,
-                    "M2_Market_Rec": market_rec.split(" / ")[0], "M2_Accuracy": acc_2, "M2_Intent": int_2,
-                    "M3_Interest_Rec": interest_rec.split(" / ")[0], "M3_Accuracy": acc_3, "M3_Intent": int_3
+                    
+                    "M1_Skill_Rec": skill_rec.split(" / ")[0], 
+                    "M1_Acc1": responses["M1_Acc1"], "M1_Acc2": responses["M1_Acc2"], 
+                    "M1_Int1": responses["M1_Int1"], "M1_Int2": responses["M1_Int2"],
+                    
+                    "M2_Market_Rec": market_rec.split(" / ")[0], 
+                    "M2_Acc1": responses["M2_Acc1"], "M2_Acc2": responses["M2_Acc2"], 
+                    "M2_Int1": responses["M2_Int1"], "M2_Int2": responses["M2_Int2"],
+                    
+                    "M3_Interest_Rec": interest_rec.split(" / ")[0], 
+                    "M3_Acc1": responses["M3_Acc1"], "M3_Acc2": responses["M3_Acc2"], 
+                    "M3_Int1": responses["M3_Int1"], "M3_Int2": responses["M3_Int2"]
                 }])
+                
                 try:
                     existing_data = conn.read(worksheet="Sheet1", ttl=0) 
                     updated_df = pd.concat([existing_data, new_data], ignore_index=True)
