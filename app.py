@@ -180,7 +180,7 @@ elif st.session_state.step == 3:
                 conn = st.connection("gsheets", type=GSheetsConnection)
                 new_row = {
                     "Timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "Course": st.session_state.course.split(" ")[0], # Очистит "1st Year (1 курс)" -> "1st" 
+                    "Course": st.session_state.course[0], 
                     "Experience": st.session_state.experience.split(" / ")[0], # Очистит "Yes / Да" -> "Yes"
                     "Major": st.session_state.major.split(" / ")[0], # Оставит только инглиш
                     "Subjects": ", ".join(st.session_state.selected_subjects), # <- ВОТ ТО, ЧТО БЫЛО УПУЩЕНО В ПРОШЛЫЙ РАЗ!
