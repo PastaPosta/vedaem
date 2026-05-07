@@ -182,6 +182,7 @@ elif st.session_state.step == 3:
                     "Course": st.session_state.course, 
                     "Experience": st.session_state.experience,
                     "Major": st.session_state.major.split(" / ")[0],
+                    "Subjects": ", ".join(st.session_state.selected_subjects),
                     "M1_Rec": skill_rec, "M1_Acc1": responses["M1_Acc1"], "M1_Acc2": responses["M1_Acc2"], "M1_Int1": responses["M1_Int1"], "M1_Int2": responses["M1_Int2"], "M1_Att": responses["M1_Att"],
                     "M2_Rec": market_rec, "M2_Acc1": responses["M2_Acc1"], "M2_Acc2": responses["M2_Acc2"], "M2_Int1": responses["M2_Int1"], "M2_Int2": responses["M2_Int2"], "M2_Att": responses["M2_Att"],
                     "M3_Rec": interest_rec, "M3_Acc1": responses["M3_Acc1"], "M3_Acc2": responses["M3_Acc2"], "M3_Int1": responses["M3_Int1"], "M3_Int2": responses["M3_Int2"], "M3_Att": responses["M3_Att"]
